@@ -31,3 +31,35 @@
     transform: rotate(360deg);
   }
 }
+
+button {
+  background: #8F66CE;
+  color: white;
+  width: 140px;
+  height: 140px;
+  font-size: 20px;
+  border-radius: 5px;
+  margin: 8px;
+  cursor: pointer;
+}
+
+.out {
+  background: white;
+  color: #8F66CE;
+  font-size: 20px;
+  border-radius: 5px;
+  border-color: #8F66CE;
+  margin: 8px;
+}
+
+.low {
+  width: auto !important;
+  height: auto !important;
+}
+
+.head {
+  font-family: LucidaGrande-Bold;
+  font-size: 41px;
+  color: #6979F8;
+  text-align: center;
+}
