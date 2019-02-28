@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Stopwatch from './Stopwatch';
 import { CSVLink, CSVDownload } from "react-csv";
-
+import _ from 'lodash'
 import logo from './logo.svg';
 import './App.css';
 
@@ -27,7 +27,8 @@ class App extends Component {
       start: false,
       secondsElapsed: 0,
       laps: [],
-      lastClearedIncrementer: null
+      lastClearedIncrementer: null,
+      showCsv: false
     }
 
     this.incrementer = null;
@@ -71,7 +72,7 @@ class App extends Component {
 
   andar() {
     const { andar } = this.state
-    
+
     andar.push({
       acao: 'Andar',
       tempo: formattedSeconds(this.state.secondsElapsed)
@@ -84,7 +85,7 @@ class App extends Component {
 
   farejar() {
     const { farejar } = this.state
-    
+
     farejar.push({
       acao: 'Farejar',
       tempo: formattedSeconds(this.state.secondsElapsed)
@@ -143,7 +144,44 @@ class App extends Component {
     arrayFinal.push(...this.state.subir)
 
 
-    console.log(arrayFinal)
+    arrayFinal = _(arrayFinal)
+      .groupBy(ar => ar.acao)
+      .value();
+
+    arrayFinal.Andar = _(arrayFinal.Andar)
+      .groupBy(ar => Math.ceil(ar.tempo.replace(':', '.')))
+      .map((value, key) => ({ Minuto: key, Quantidade: value.length, Ação: 'Andar' }))
+      .value()
+
+    arrayFinal.Farejar = _(arrayFinal.Farejar)
+      .groupBy(ar => Math.ceil(ar.tempo.replace(':', '.')))
+      .map((value, key) => ({ Minuto: key, Quantidade: value.length, Ação: 'Farejar' }))
+      .value()
+
+
+    arrayFinal.Cocar = _(arrayFinal.Cocar)
+      .groupBy(ar => Math.ceil(ar.tempo.replace(':', '.')))
+      .map((value, key) => ({ Minuto: key, Quantidade: value.length }))
+      .value()
+
+    arrayFinal.Lamber = _(arrayFinal.Lamber)
+      .groupBy(ar => Math.ceil(ar.tempo.replace(':', '.')))
+      .map((value, key) => ({ Minuto: key, Quantidade: value.length, Ação: 'Lamber' }))
+      .value()
+
+    arrayFinal.Subir = _(arrayFinal.Subir)
+      .groupBy(ar => Math.ceil(ar.tempo.replace(':', '.')))
+      .map((value, key) => ({ Minuto: key, Quantidade: value.length }))
+      .value()
+
+
+    arrayFinal = [
+      ...arrayFinal.Andar,
+      ...arrayFinal.Farejar,
+      ...arrayFinal.Cocar,
+      ...arrayFinal.Lamber,
+      ...arrayFinal.Subir
+    ]
 
     return arrayFinal
 
@@ -152,14 +190,12 @@ class App extends Component {
   render() {
     const { andar, farejar, cocar, lamber, subir, tempo, start } = this.state
 
-    console.log(formattedSeconds(this.state.secondsElapsed))
-
     return (
       <div className="App">
         <div className='head'>
           Contato Skinner
         </div>
-      
+
         <div className="stopwatch">
           <h1 className="stopwatch-timer">{formattedSeconds(this.state.secondsElapsed)}</h1>
 
@@ -182,12 +218,33 @@ class App extends Component {
           <button onClick={() => this.lamber()}>(F) Lamber {lamber.length}</button>
           <button onClick={() => this.subir()}>(G) Subir {subir.length}</button>
         </div>
-        <CSVLink data={this.getCsv()}><button className='low out'>
-          
-          Relatório
-      </button></CSVLink>
 
-        
+
+        <button className='low out' onClick={() => {
+          this.setState({
+            showCsv: true
+          })
+        }}>
+          Relatório
+        </button>
+        {(this.state.showCsv && <CSVLink
+          data={this.getCsv()}
+          asyncOnClick={true}
+          onClick={() => {
+            this.setState({
+              showCsv: false,
+              baixou: true
+            })
+          }}
+        >
+          <button className='low out'>
+            Agora clique aqui
+        </button>
+        </CSVLink>)}
+        {(this.state.baixou && <p>
+          Fico feliz que tenha baixado, zap: 41 9 9169-8884
+        </p>)}
+
       </div>
     );
   }
