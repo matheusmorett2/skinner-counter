@@ -161,7 +161,7 @@ class App extends Component {
 
     arrayFinal.Cocar = _(arrayFinal.Cocar)
       .groupBy(ar => Math.ceil(ar.tempo.replace(':', '.')))
-      .map((value, key) => ({ Minuto: key, Quantidade: value.length }))
+      .map((value, key) => ({ Minuto: key, Quantidade: value.length, Ação: 'Coçar' }))
       .value()
 
     arrayFinal.Lamber = _(arrayFinal.Lamber)
@@ -171,7 +171,7 @@ class App extends Component {
 
     arrayFinal.Subir = _(arrayFinal.Subir)
       .groupBy(ar => Math.ceil(ar.tempo.replace(':', '.')))
-      .map((value, key) => ({ Minuto: key, Quantidade: value.length }))
+      .map((value, key) => ({ Minuto: key, Quantidade: value.length, Ação: 'Subir' }))
       .value()
 
 
