@@ -1,3 +1,11 @@
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
 .App {
   text-align: center;
 }
@@ -41,6 +49,19 @@ button {
   border-radius: 5px;
   margin: 8px;
   cursor: pointer;
+
+  transition: all .1s;
+}
+
+button:hover {
+  background: #8F66CE;
+  opacity: 0.8;
+}
+
+.out:hover {
+  background: #8F66CE;
+  color: white;
+  opacity: 1;
 }
 
 .out {
@@ -62,4 +83,8 @@ button {
   font-size: 41px;
   color: #6979F8;
   text-align: center;
+}
+
+*:focus {
+  outline: none;
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Stopwatch from './Stopwatch';
 import { CSVLink, CSVDownload } from "react-csv";
+import Switch from "react-switch";
 import _ from 'lodash'
 import logo from './logo.svg';
 import './App.css';
@@ -28,10 +29,40 @@ class App extends Component {
       secondsElapsed: 0,
       laps: [],
       lastClearedIncrementer: null,
-      showCsv: false
+      showCsv: false,
+      teclado: false
     }
 
     this.incrementer = null;
+  }
+
+  componentDidMount() {
+    document.addEventListener("keydown", this._handleKeyDown);
+  }
+
+
+  _handleKeyDown = (event) => {
+    if (this.state.teclado === true) {
+      if (event.keyCode === 65) {
+        this.andar()
+      }
+
+      if (event.keyCode === 83) {
+        this.farejar()
+      }
+
+      if (event.keyCode === 68) {
+        this.cocar()
+      }
+
+      if (event.keyCode === 70) {
+        this.lamber()
+      }
+
+      if (event.keyCode === 71) {
+        this.subir()
+      }
+    }
   }
 
   handleStartClick() {
@@ -158,7 +189,6 @@ class App extends Component {
       .map((value, key) => ({ Minuto: key, Quantidade: value.length, Ação: 'Farejar' }))
       .value()
 
-
     arrayFinal.Cocar = _(arrayFinal.Cocar)
       .groupBy(ar => Math.ceil(ar.tempo.replace(':', '.')))
       .map((value, key) => ({ Minuto: key, Quantidade: value.length, Ação: 'Coçar' }))
@@ -193,7 +223,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className='head'>
-          Contato Skinner
+          Contador Skinner
         </div>
 
         <div className="stopwatch">
@@ -241,10 +271,34 @@ class App extends Component {
             Agora clique aqui
         </button>
         </CSVLink>)}
-        {(this.state.baixou && <p>
-          Fico feliz que tenha baixado, zap: 41 9 9169-8884
-        </p>)}
+        {(this.state.baixou && <p>Obrigado por utilizar o Contador Skinner</p>)}
 
+        <p>
+          Gente, lancei uma atualização e agora funciona pelo teclado, blz?
+          <br />
+          Tem esse switch pra ativar e desativar, bjs...
+        </p>
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}>
+          Ativar teclado: <Switch
+            onChange={() => this.setState({ teclado: !this.state.teclado })}
+            checked={this.state.teclado}
+            onColor="#86d3ff"
+            onHandleColor="#2693e6"
+            handleDiameter={30}
+            uncheckedIcon={false}
+            checkedIcon={false}
+            boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
+            activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
+            height={20}
+            width={48}
+            className="react-switch"
+            id="material-switch"
+          />
+        </div>
       </div>
     );
   }
