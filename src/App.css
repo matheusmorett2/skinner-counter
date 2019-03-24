@@ -1,13 +1,31 @@
 body {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   align-items: center;
   justify-content: center;
 }
 
+.developer {
+  position: absolute;
+  bottom: 0;
+  right: 5%;
+  bottom: 1%;
+}
+
 .App {
   text-align: center;
+
+  position: relative;
+  padding-bottom: 50px;
+
+  display: flex;
+  flex-direction: column;
+  min-height: 90vh;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+
 }
 
 .App-logo {

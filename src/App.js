@@ -222,6 +222,9 @@ class App extends Component {
 
     return (
       <div className="App">
+        <div className="developer">
+          Feito por: Matheus Morett
+        </div>
         <div className='head'>
           Contador Skinner
         </div>
